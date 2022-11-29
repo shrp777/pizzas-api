@@ -16,7 +16,6 @@ services:
     networks:
       - fastapiXdocker
     restart: always
-
   db:
     image: postgres:13-alpine
     volumes:
