@@ -12,8 +12,16 @@ from sqlalchemy.orm import relationship
 import os
 import time
 
-#SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
-SQLALCHEMY_DATABASE_URL = "postgresql://fastapi:fastapi@db:5432/fastapi"
+POSTGRES_USER = os.getenv('POSTGRES_USER')
+POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
+POSTGRES_DB = os.getenv('POSTGRES_DB')
+POSTGRES_PORT = os.getenv('POSTGRES_PORT')
+POSTGRES_SERVER = os.getenv('POSTGRES_SERVER')
+
+#SQLALCHEMY_DATABASE_URL = f"postgresql://fastapi:fastapi@db:5432/fastapi"
+SQLALCHEMY_DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
+
+
 
 def wait_for_db(db_uri):
     """checks if database connection is established"""
@@ -53,11 +61,12 @@ Base = declarative_base()
 app = FastAPI()
 
 
-class Team(Base):
-    __tablename__ = "teams"
+class User(Base):
+    __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True, index=True)
+    username = Column(String, unique=True, index=True)
+    email = Column(String, unique=True, index=True)
 
 Base.metadata.create_all(bind=engine)
 

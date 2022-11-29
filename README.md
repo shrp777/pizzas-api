@@ -6,6 +6,10 @@ Projet modèle d'emploi de Docker pour la mise en place d'une architecture Back 
 - Tutoriel officiel :
 https://fastapi.tiangolo.com/deployment/docker/
 
+## Variables d'environnement
+
+Créer les fichiers ./api/.env et ./db/.env basés sur les fichiers modèles ./api/.env.example et ./db/.env.example (à adapter librement).
+
 ## Commandes Docker utiles
 
 - Création d'une image à partir du fichier Dockerfile et des sources :
