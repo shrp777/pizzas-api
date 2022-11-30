@@ -15,7 +15,6 @@ services:
       - db
     networks:
       - fastapiXdocker
-    restart: always
   db:
     image: postgres:13-alpine
     volumes:
@@ -26,7 +25,6 @@ services:
       - ./db/.env
     networks:
       - fastapiXdocker
-    restart: always
     healthcheck:
       test:
         [
