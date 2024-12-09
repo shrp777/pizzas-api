@@ -1,78 +1,99 @@
-from typing import Union
-
-from fastapi import FastAPI
-
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
-
 import os
-import time
 
-SQLALCHEMY_DATABASE_URL = os.getenv('DATABASE_URL')
+from fastapi import FastAPI, HTTPException, Depends
 
+from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy import create_engine
 
-def wait_for_db(db_uri):
-    """checks if database connection is established"""
+from typing import List
 
-    _local_engine = create_engine(db_uri)
+from .models.pizza import Pizza, PizzaCreateDTO, PizzaModel
 
-    _LocalSessionLocal = sessionmaker(
-        autocommit=False, autoflush=False, bind=_local_engine
-    )
-
-    up = False
-    while not up:
-        try:
-            # Try to create session to check if DB is awake
-            db_session = _LocalSessionLocal()
-            # try some basic query
-            db_session.execute("SELECT 1")
-            db_session.commit()
-        except Exception as err:
-            print(f"Connection error: {err}")
-            up = False
-        else:
-            up = True
-
-        time.sleep(2)
-
+DB_URL = os.getenv('DATABASE_URL')
 
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL
+    DB_URL
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
 
 app = FastAPI()
 
 
-class User(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True)
-    email = Column(String, unique=True, index=True)
-
-
-Base.metadata.create_all(bind=engine)
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @app.get("/")
 def read_root():
-    return {"message": "Test Fast API"}
+    """
+    Racine de l'API
+    """
+    return {"message": "Pizzas API"}
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+@app.get("/pizzas", response_model=List[Pizza])
+def get_pizzas(db: Session = Depends(get_db)):
+    """
+    Récupère la liste des pizzas
+    """
+    return db.query(PizzaModel).all()
 
 
-@app.get("/items")
-def read_items():
-    return []
+@app.get("/pizzas/{pizza_id}",response_model=Pizza)
+def get_pizza(pizza_id: int, db: Session = Depends(get_db)):
+    """
+    Récupère une pizza par son id
+    """
+    pizza = db.query(PizzaModel).filter(PizzaModel.id == pizza_id).first()
+    if not pizza:
+        raise HTTPException(status_code=404, detail="Pizza not found")
+    return pizza
+
+
+@app.post("/pizzas", response_model=Pizza, status_code=201)
+def create_pizza(pizza: PizzaCreateDTO, db: Session = Depends(get_db)):
+    """
+    Créé une nouvelle pizza
+    """
+    existing_pizza = db.query(PizzaModel).filter(
+        PizzaModel.name == pizza.name).first()
+    if existing_pizza:
+        raise HTTPException(status_code=400, detail="Pizza already exists")
+    new_pizza = PizzaModel(**pizza.model_dump())
+    db.add(new_pizza)
+    db.commit()
+    db.refresh(new_pizza)
+    return new_pizza
+
+
+@app.put("/pizzas/{pizza_id}", response_model=Pizza)
+def update_pizza(pizza_id: int, updated_pizza: Pizza, db: Session = Depends(get_db)):
+    """
+    Met à jour une pizza sélectionnée selon son id
+    """
+    pizza = db.query(PizzaModel).filter(PizzaModel.id == pizza_id).first()
+    if not pizza:
+        raise HTTPException(status_code=404, detail="Pizza not found")
+    for key, value in updated_pizza.model_dump().items():
+        setattr(pizza, key, value)
+    db.commit()
+    db.refresh(pizza)
+    return pizza
+
+
+@app.delete("/pizzas/{pizza_id}", status_code=204)
+def delete_pizza(pizza_id: int, db: Session = Depends(get_db)):
+    """
+    Supprime une pizza sélectionnée selon son id
+    """
+    pizza = db.query(PizzaModel).filter(PizzaModel.id == pizza_id).first()
+    if not pizza:
+        raise HTTPException(status_code=404, detail="Pizza not found")
+    db.delete(pizza)
+    db.commit()

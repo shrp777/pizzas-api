@@ -25,6 +25,15 @@ Créer les fichiers ./api/.env et ./db/.env basés sur les fichiers modèles ./a
 - Initialisation des services Docker :
 `docker compose up`
 
+- Initialisation des services Docker en mode détaché (reprise de la main dans le terminal) :
+`docker compose up -d`
+
+- Initialisation des services Docker avec reconstruction de l'image :
+`docker compose up --build`
+
+- Initialisation des services Docker avec activation du mode watch (= hot reloading) :
+`docker compose up --watch`
+
 - Démarrage des services Docker :
 `docker compose start`
 
@@ -34,22 +43,128 @@ Créer les fichiers ./api/.env et ./db/.env basés sur les fichiers modèles ./a
 - Clôture des services Docker :
 `docker compose stop`
 
-## Test de l'API
+## Routes l'API
 
-- Racine :
+### Racine
 
-<http://localhost:8080/>
+```sh
+curl http://localhost:8080
+```
 
-- Route items :
+### Collection pizzas
 
-<http://localhost:8080/items>
+#### Création d'une pizza
 
-<http://localhost:8080/items/10>
+```sh
+curl --request POST \
+  --url http://localhost:8080/pizzas \
+  --header 'content-type: application/json' \
+  --data '{
+  "name": "Margherita",
+  "ingredients": "Basilic, Mozzarella",
+  "price": 6
+}'
+```
 
-<http://localhost:8080/items/10?q=test>
+```http
+"POST /pizzas HTTP/1.1" 201
+```
 
-- Documentation Swagger générée automatiquement
+```JSON
+{
+  "name": "Margherita",
+  "ingredients": "Basilic, Mozzarella",
+  "price": 6,
+  "id": 1
+}
+```
+
+#### Lecture de toutes les pizzas
+
+```sh
+curl --request GET \
+  --url http://localhost:8080/pizzas
+```
+
+```http
+"GET /pizzas HTTP/1.1" 200
+```
+
+```JSON
+[
+  {
+    "name": "Margherita",
+    "ingredients": "Basilic, Mozzarella",
+    "price": 6,
+    "id": 1
+  }
+]
+```
+
+#### Lecture de 1 pizza par son id
+
+```sh
+curl --request GET \
+  --url http://localhost:8080/pizzas/1
+```
+
+```http
+"GET /pizzas/1 HTTP/1.1" 200
+```
+
+```JSON
+{
+  "name": "Margherita",
+  "ingredients": "Basilic, Mozzarella",
+  "price": 6,
+  "id": 1
+}
+```
+
+### Mise à jour d'1 pizza par son id
+
+```sh
+curl --request PUT \
+  --url http://localhost:8080/pizzas/1 \
+  --header 'content-type: application/json' \
+  --data '{
+  "id":1,
+  "name": "Margherita",
+  "ingredients": "Mozzarella, Basilic",
+  "price": 6
+}'
+```
+
+```http
+"PUT /pizzas/1 HTTP/1.1" 200
+```
+
+```json
+{
+  "name": "Margherita",
+  "ingredients": "Mozzarella, Basilic",
+  "price": 7,
+  "id": 1
+}
+```
+
+#### Suppression d'une pizza selon son id
+
+```sh
+curl --request DELETE \
+  --url http://localhost:8080/pizzas/1
+```
+
+```http
+"DELETE /pizzas/1 HTTP/1.1" 204
+```
+
+- Documentation Swagger générée automatiquement par FastAPI
 <http://localhost:8080/docs>
+
+## Adminer
+
+<http://localhost:8181>
 
 --
 

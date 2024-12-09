@@ -12,6 +12,12 @@ services:
         condition: service_healthy
     networks:
       - fastapiXdocker
+    develop:
+      watch:
+        - path: ./api
+          action: rebuild
+          target: /code
+
   db:
     image: postgres:13-alpine
     user: postgres
