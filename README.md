@@ -1,6 +1,6 @@
-# Docker + FastAPI (Python)
+# Preuve de concept : Docker + FastAPI (Python)
 
-Projet modèle pour l'emploi de Docker dans la mise en place d'une architecture Back End basée sur un environnement Python avec le framework FastAPI (<https://fastapi.tiangolo.com/>).
+API REST basée sur le langage Python et le framework FastAPI (<https://fastapi.tiangolo.com/>).
 
 - Attention le projet FastAPI mis en place n'est qu'une base de travail à améliorer. Il est recommandé d'organiser le code de l'API à travers différents fichiers spécifiques, en séparant les modèles de la logique métier (cf. <https://fastapi.tiangolo.com/tutorial/bigger-applications/>).
 
@@ -10,9 +10,9 @@ Projet modèle pour l'emploi de Docker dans la mise en place d'une architecture 
 - PostgreSQL + Docker
 <https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/>
 
-## Variables d'environnement
+## Installation
 
-Créer les fichiers ./api/.env et ./db/.env basés sur les fichiers modèles ./api/.env.example et ./db/.env.example (à adapter librement).
+- Créer les fichiers ./api/.env et ./db/.env basés sur les fichiers modèles ./api/.env.example et ./db/.env.example (à adapter).
 
 ## Commandes Docker utiles
 
@@ -83,6 +83,8 @@ curl --request POST \
 ```
 
 #### Lecture de toutes les pizzas
+
+__🚨Par défaut la collection est vide🚨__
 
 ```sh
 curl --request GET \
