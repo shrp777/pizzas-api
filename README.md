@@ -25,6 +25,9 @@ Créer les fichiers ./api/.env et ./db/.env basés sur les fichiers modèles ./a
 - Initialisation des services Docker :
 `docker compose up`
 
+- Rénitialisation des services Docker (suppression des données) :
+`docker compose down`
+
 - Initialisation des services Docker en mode détaché (reprise de la main dans le terminal) :
 `docker compose up -d`
 
