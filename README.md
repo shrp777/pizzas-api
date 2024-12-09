@@ -1,11 +1,14 @@
 # Docker + FastAPI (Python)
 
-Projet modèle d'emploi de Docker pour la mise en place d'une architecture Back End basée sur un environnement Python avec le framework FastAPI (https://fastapi.tiangolo.com/).
+Projet modèle pour l'emploi de Docker dans la mise en place d'une architecture Back End basée sur un environnement Python avec le framework FastAPI (<https://fastapi.tiangolo.com/>).
 
-- Attention le projet FastAPI mis en place n'est qu'une base de travail à améliorer. Il est recommandé d'organiser le code de l'API à travers différents fichiers spécifiques, en séparant les modèles de la logique métier (cf. https://fastapi.tiangolo.com/tutorial/bigger-applications/).
+- Attention le projet FastAPI mis en place n'est qu'une base de travail à améliorer. Il est recommandé d'organiser le code de l'API à travers différents fichiers spécifiques, en séparant les modèles de la logique métier (cf. <https://fastapi.tiangolo.com/tutorial/bigger-applications/>).
 
 - Tutoriel officiel :
-https://fastapi.tiangolo.com/deployment/docker/
+<https://fastapi.tiangolo.com/deployment/docker/>
+
+- PostgreSQL + Docker
+<https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/>
 
 ## Variables d'environnement
 
@@ -28,34 +31,34 @@ Créer les fichiers ./api/.env et ./db/.env basés sur les fichiers modèles ./a
 - Consultation des services Docker actifs :
 `docker compose ps`
 
-- Clôture des services Docker : 
+- Clôture des services Docker :
 `docker compose stop`
 
 ## Test de l'API
 
-- Racine : 
+- Racine :
 
-http://localhost/
+<http://localhost:8080/>
 
 - Route items :
 
-http://localhost/items
+<http://localhost:8080/items>
 
-http://localhost/items/10
+<http://localhost:8080/items/10>
 
-http://localhost/items/10?q=test
+<http://localhost:8080/items/10?q=test>
 
 - Documentation Swagger générée automatiquement
-http://localhost/docs
+<http://localhost:8080/docs>
 
----
+--
 
-**Alexandre Leroux**
+!["Logotype Shrp"](https://sherpa.one/images/sherpa-logotype.png)
 
-Développeur logiciel (web & mobile)<br/>
-Enseignant / Formateur
+__Alexandre Leroux__  
+_Enseignant / Formateur_  
+_Développeur logiciel web & mobile_
 
-Mail : alex@sherpa.one<br/>
-Site : https://sherpa.one<br/>
-Github : @sherpa1<br/>
-Discord : sherpa#3890<br/>
+Nancy (Grand Est, France)
+
+<https://shrp.dev>
