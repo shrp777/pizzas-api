@@ -1,4 +1,4 @@
-# Preuve de concept : Docker + FastAPI (Python)
+# Pizzas API - Preuve de concept : Docker + FastAPI (Python) - Version base de données distante (Supabase)
 
 API REST basée sur le langage Python et le framework FastAPI (<https://fastapi.tiangolo.com/>).
 
@@ -10,6 +10,18 @@ API REST basée sur le langage Python et le framework FastAPI (<https://fastapi.
 - PostgreSQL + Docker
 <https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/>
 
+## Création d'un projet Supabase
+
+- créer un compte sur <https://supabase.com/>
+- créer un projet en indiquant dans "security options" : only connection string
+- une fois le projet créé, cliquer sur le bouton "connect" en haut de l'écran
+- récupérer l'URI de connexion à la base de données (version transaction pooler)
+- adapter l'URI en remplaçant [YOUR_PASSWORD] par le mot de passe que vous avez renseigné lors de la création du projet
+
+![alt](./assets/1-creation-projet-supabase.png)
+![alt](./assets/2-informations-de-connexion.png)
+![alt](./assets/3-informations-de-connexion.png)
+
 ## Installation
 
 - Créer les fichiers ./api/.env et ./db/.env basés sur les fichiers modèles ./api/.env.example et ./db/.env.example (à adapter).
@@ -20,7 +32,7 @@ API REST basée sur le langage Python et le framework FastAPI (<https://fastapi.
 `docker build -t fastapiimage .`
 
 - Création d'un container à partir de l'image "fastapiimage" précédemment créée :
-`docker run -d --name fastapi -p 80:80 fastapiimage`
+`docker run -d --name fastapi -p 8080:80 fastapiimage`
 
 - Initialisation des services Docker :
 `docker compose up`
@@ -167,11 +179,7 @@ curl --request DELETE \
 - Documentation Swagger générée automatiquement par FastAPI
 <http://localhost:8080/docs>
 
-## Adminer (interface d'administration de base de données)
-
-<http://localhost:8181>
-
-## Base de donénes PotsgreSQL
+## Base de données PotsgreSQL distante, mise à disposition par Supabase
 
 ### Schéma
 
@@ -196,10 +204,8 @@ CREATE INDEX "ix_pizzas_id" ON "public"."pizzas" USING btree ("id");
 
 ```sql
 INSERT INTO "pizzas" ("id", "name", "ingredients", "price") VALUES
-(1,	'Margherita',	'Basilic, Mozzarella',	6);
+(1, 'Margherita', 'Basilic, Mozzarella', 6);
 ```
-
-
 
 --
 
