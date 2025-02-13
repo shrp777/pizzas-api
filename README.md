@@ -171,7 +171,7 @@ curl --request DELETE \
 
 <http://localhost:8181>
 
-## Base de donénes PotsgreSQL
+## Base de données PotsgreSQL
 
 ### Schéma
 
@@ -196,10 +196,8 @@ CREATE INDEX "ix_pizzas_id" ON "public"."pizzas" USING btree ("id");
 
 ```sql
 INSERT INTO "pizzas" ("id", "name", "ingredients", "price") VALUES
-(1,	'Margherita',	'Basilic, Mozzarella',	6);
+(1, 'Margherita', 'Basilic, Mozzarella', 6);
 ```
-
-
 
 --
 
