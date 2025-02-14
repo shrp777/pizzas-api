@@ -4,49 +4,45 @@ services:
     volumes:
       - ./api/app:/code/app
     ports:
-      - 80:80
+      - 8080:80
     env_file:
       - ./api/.env
     depends_on:
       db:
         condition: service_healthy
-    links:
-      - db
     networks:
-      - pizzas_network
-    restart: always
+      - pizzas-ntwrk
+    develop:
+      watch:
+        - path: ./api
+          action: rebuild
+          target: /code
 
   db:
-    image: postgres:13-alpine
-    volumes:
-      - ./db/data:/var/lib/postgresql/data/
-    ports:
-      - 5432:5432
+    image: postgres
     env_file:
       - ./db/.env
+    ports:
+      - 5432:5432
     networks:
-      - pizzas_network
-    restart: always
+      - pizzas-ntwrk
     healthcheck:
-      test:
-        [
-          "CMD",
-          "pg_isready",
-          "-q",
-          "-d",
-          "${POSTGRES_DB}",
-          "-U",
-          "${POSTGRES_USER}"
-        ]
-      timeout: 45s
-      interval: 10s
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 5s
       retries: 10
+    # Décommenter la ligne ci-dessous pour activer l'emploi de volumes pour le service db
+    #volumes:
+    # Décommenter la ligne ci-dessous pour insérer des données via des requêtes SQL à l'initialisation de la base de données
+    # - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    # Décommenter la ligne ci-dessous pour sauvegarder en local les fichiers en provenance du volume Docker alloué à la base de données
+    #  - ./db/data:/var/lib/postgresql/data/
   adminer:
     image: adminer
     ports:
       - 8181:8080
     networks:
-      - pizzas_network
+      - pizzas-ntwrk
 networks:
-  pizzas_network:
+  pizzas-ntwrk:
     driver: bridge

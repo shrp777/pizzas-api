@@ -1,8 +1,9 @@
-# Pizzas API - Preuve de concept : Docker + FastAPI (Python) + PostgreSQL
-
-Version du projet avec base de données distante hébergée par __Supabase__.
+# Pizzas API
 
 __API REST__ développée en Python avec le framework __FastAPI__ (<https://fastapi.tiangolo.com/>).
+
+- Preuve de concept : Docker + FastAPI (Python) + PostgreSQL
+- Version avec __base de données PostgreSQL locale__ dans un container Docker.
 
 - Attention le projet FastAPI mis en place n'est qu'une base de travail à améliorer. Il est recommandé d'organiser le code de l'API à travers différents fichiers spécifiques, en séparant les modèles de la logique métier (cf. <https://fastapi.tiangolo.com/tutorial/bigger-applications/>).
 
@@ -11,18 +12,6 @@ __API REST__ développée en Python avec le framework __FastAPI__ (<https://fast
 
 - PostgreSQL + Docker
 <https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/>
-
-## Création d'un projet Supabase
-
-- créer un compte sur <https://supabase.com/>
-- créer un projet en indiquant dans __security options__ : __only connection string__
-- une fois le projet créé, cliquer sur le bouton __connect__ en haut de l'écran
-- récupérer l'URI de connexion à la base de données (version __transaction pooler__)
-- adapter l'URI en remplaçant __[YOUR_PASSWORD]__ par le mot de passe que vous avez renseigné lors de la création du projet
-
-![alt](./assets/1-creation-projet-supabase.png)
-![alt](./assets/2-informations-de-connexion.png)
-![alt](./assets/3-informations-de-connexion.png)
 
 ## Installation
 
@@ -98,7 +87,7 @@ curl --request POST \
 
 #### Lecture de toutes les pizzas
 
-__🚨Par défaut la collection est vide🚨__
+🚨Par défaut la base de données est vide🚨
 
 ```sh
 curl --request GET \

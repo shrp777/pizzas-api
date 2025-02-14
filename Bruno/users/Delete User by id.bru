@@ -1,0 +1,15 @@
+meta {
+  name: Delete User by id
+  type: http
+  seq: 5
+}
+
+delete {
+  url: http://localhost:8080/users/1
+  body: none
+  auth: none
+}
+
+body:json {
+  {"id":1,"email":"jane@doe.com","password":"azerty"}
+}
