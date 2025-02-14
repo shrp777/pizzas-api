@@ -1,5 +1,7 @@
 # Pizzas API - Preuve de concept : Docker + FastAPI (Python) + PostgreSQL
 
+![Supabase](./assets/supabase.jpg)
+
 Version du projet avec base de données distante hébergée par __Supabase__.
 
 __API REST__ développée en Python avec le framework __FastAPI__ (<https://fastapi.tiangolo.com/>).
@@ -98,7 +100,7 @@ curl --request POST \
 
 #### Lecture de toutes les pizzas
 
-__🚨Par défaut la collection est vide🚨__
+🚨Par défaut la collection est vide🚨
 
 ```sh
 curl --request GET \
