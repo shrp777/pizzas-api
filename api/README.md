@@ -1,8 +1,4 @@
-# Base de données PostgreSQL
-
-- Base de données locale
-- Service Docker : db
-- Port : 5432
+# API REST FastAPI (Python)
 
 --
 
