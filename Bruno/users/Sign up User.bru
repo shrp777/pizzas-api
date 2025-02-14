@@ -1,0 +1,15 @@
+meta {
+  name: Sign up User
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://localhost:8080/users/sign-up
+  body: json
+  auth: none
+}
+
+body:json {
+  {"email":"john@doe.com","password":"azerty"}
+}
